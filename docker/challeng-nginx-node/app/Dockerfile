@@ -1,10 +1,6 @@
-FROM node:18.12.0
+FROM node:18-alpine
 
-WORKDIR /home/app
-
-COPY . .
-
-RUN apt-get update && apt-get install -y wget
+RUN apk update && apk add wget
 
 ENV DOCKERIZE_VERSION v0.6.1
 
@@ -12,6 +8,10 @@ RUN wget https://github.com/jwilder/dockerize/releases/download/$DOCKERIZE_VERSI
     && tar -C /usr/local/bin -xzvf dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz \
     && rm dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz
 
+WORKDIR /home/app
+
+COPY . .
+
 EXPOSE 3000
 
-ENTRYPOINT [ "bash", "start.sh" ]
+ENTRYPOINT [ "sh", "start.sh" ]

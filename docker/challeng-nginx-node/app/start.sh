@@ -1,5 +1,7 @@
-dockerize -wait tcp://mysqldb:3306 -timeout 20s 
+#!/bin/sh
 
-npm i
+npm install
+
+dockerize -wait tcp://mysqldb:3306 -timeout 20s
 
 npm run start
