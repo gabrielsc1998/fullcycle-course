@@ -10,7 +10,7 @@ const bootstrap = () => {
     const { name } = await findName();
 
     const resp = `
-      <h1>Full Cycle</h1>
+      <h1>Full Cycle Rocks!</h1>
       <hr />
       <p>${name}<p/>
     `
