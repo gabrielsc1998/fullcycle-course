@@ -22,8 +22,8 @@ const mockCustomerChangedAddressData: CustomerChangedAddressEventData = {
   address: new Address("street", 1, "zip", "city"),
 };
 
-describe("Send Console Log 1 Handler When Customer is Created", () => {
-  it("should call handler when the event is called [ Customer Created ]", () => {
+describe("Send Console Log Handler When the Customer Address is Changed", () => {
+  it("should call handler when the event is called [ Customer Address Changed ]", () => {
     const eventHandler = makeEventHandler();
     const spyEventHandler = jest.spyOn(eventHandler, "handle");
 
