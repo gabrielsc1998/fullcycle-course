@@ -33,7 +33,7 @@ const makeSut = (): SUT => {
 
 let sut: SUT = null;
 
-describe("Find Product Use Case [ unity ]", () => {
+describe("Find Product Use Case [ integration ]", () => {
   let dbClient: DBSequelizeConnection;
 
   beforeAll(() => (sut = makeSut()));
