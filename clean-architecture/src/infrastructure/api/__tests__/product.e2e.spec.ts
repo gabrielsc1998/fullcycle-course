@@ -77,4 +77,32 @@ describe("E2E test for product", () => {
       expect(response.body.products.length).toBe(0);
     });
   });
+
+  describe("When call the find product endpoint", () => {
+    it("should get a product", async () => {
+      const body = {
+        name: "product-name-1",
+        price: 100,
+      };
+      const createResponse = await request(app).post(BASE_ROUTE).send(body);
+
+      const response = await request(app).get(
+        `${BASE_ROUTE}/${createResponse.body.id}`
+      );
+
+      expect(response.status).toBe(200);
+      expect(response.body.id).toBe(createResponse.body.id);
+      expect(response.body.name).toBe(createResponse.body.name);
+      expect(response.body.price).toBe(createResponse.body.price);
+    });
+
+    it("should throw error when the product not exists", async () => {
+      const response = await request(app).get(
+        `${BASE_ROUTE}/${"inexistent-product-id"}`
+      );
+
+      expect(response.status).toBe(404);
+      expect(response.body.message).toBe("Product not found");
+    });
+  });
 });
