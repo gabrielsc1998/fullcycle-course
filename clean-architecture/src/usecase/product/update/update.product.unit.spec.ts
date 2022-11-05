@@ -55,13 +55,13 @@ describe("Update Product Use Case [ unity ]", () => {
 
   it("should throw an error when try update with invalid name", async () => {
     await expect(sut.useCase.execute({ ...input, name: "" })).rejects.toThrow(
-      "Name is required"
+      "product: Name is required"
     );
   });
 
   it("should throw an error when try update with invalid price", async () => {
     await expect(sut.useCase.execute({ ...input, price: -1 })).rejects.toThrow(
-      "Price must be greater than zero"
+      "product: Price must be greater than zero"
     );
   });
 

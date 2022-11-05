@@ -65,7 +65,7 @@ describe("Update Product Use Case [ integration ]", () => {
     );
 
     await expect(sut.useCase.execute({ ...input, name: "" })).rejects.toThrow(
-      "Name is required"
+      "product: Name is required"
     );
   });
 
@@ -75,7 +75,7 @@ describe("Update Product Use Case [ integration ]", () => {
     );
 
     await expect(sut.useCase.execute({ ...input, price: -1 })).rejects.toThrow(
-      "Price must be greater than zero"
+      "product: Price must be greater than zero"
     );
   });
 
