@@ -105,4 +105,70 @@ describe("E2E test for product", () => {
       expect(response.body.message).toBe("Product not found");
     });
   });
+
+  describe("When call the update product endpoint", () => {
+    it("should update a product", async () => {
+      const body = {
+        name: "product-name",
+        price: 100,
+      };
+      const createResponse = await request(app).post(BASE_ROUTE).send(body);
+
+      const input = {
+        id: createResponse.body.id,
+        name: "new-product-name",
+        price: 200,
+      };
+
+      const response = await request(app).put(BASE_ROUTE).send(input);
+
+      expect(response.status).toBe(200);
+      expect(response.body.id).toBe(input.id);
+      expect(response.body.name).toBe(input.name);
+      expect(response.body.price).toBe(input.price);
+    });
+
+    it("should throw error when the product not exists", async () => {
+      const response = await request(app)
+        .put(BASE_ROUTE)
+        .send({ id: "inexistent-product-id" });
+
+      expect(response.status).toBe(404);
+      expect(response.body.message).toBe("Product not found");
+    });
+
+    it("should throw error when the name is invalid", async () => {
+      const createResponse = await request(app).post(BASE_ROUTE).send({
+        name: "product-name",
+        price: 100,
+      });
+
+      const input = {
+        id: createResponse.body.id,
+        name: "",
+      };
+
+      const response = await request(app).put(BASE_ROUTE).send(input);
+
+      expect(response.status).toBe(500);
+      expect(response.body.message).toEqual("Name is required");
+    });
+
+    it("should throw error when the price is invalid", async () => {
+      const createResponse = await request(app).post(BASE_ROUTE).send({
+        name: "product-name",
+        price: 100,
+      });
+
+      const input = {
+        id: createResponse.body.id,
+        price: -1,
+      };
+
+      const response = await request(app).put(BASE_ROUTE).send(input);
+
+      expect(response.status).toBe(500);
+      expect(response.body.message).toEqual("Price must be greater than zero");
+    });
+  });
 });
