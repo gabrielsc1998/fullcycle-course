@@ -42,4 +42,39 @@ describe("E2E test for product", () => {
       expect(response.status).toBe(500);
     });
   });
+
+  describe("When call the list products endpoint", () => {
+    it("should list all products", async () => {
+      const bodyProduct1 = {
+        name: "product-name-1",
+        price: 100,
+      };
+      await request(app).post(BASE_ROUTE).send(bodyProduct1);
+
+      const bodyProduct2 = {
+        name: "product-name-2",
+        price: 100,
+      };
+      await request(app).post(BASE_ROUTE).send(bodyProduct2);
+
+      const response = await request(app).get(BASE_ROUTE);
+
+      expect(response.status).toBe(200);
+      expect(response.body.products.length).toBe(2);
+
+      const product = response.body.products[0];
+      expect(product.name).toBe(bodyProduct1.name);
+      expect(product.price).toBe(bodyProduct1.price);
+      const product2 = response.body.products[1];
+      expect(product2.name).toBe(bodyProduct2.name);
+      expect(product2.price).toBe(bodyProduct2.price);
+    });
+
+    it("should get an empty array when the database is empty", async () => {
+      const response = await request(app).get(BASE_ROUTE);
+
+      expect(response.status).toBe(200);
+      expect(response.body.products.length).toBe(0);
+    });
+  });
 });
