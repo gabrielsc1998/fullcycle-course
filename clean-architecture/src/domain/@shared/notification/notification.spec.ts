@@ -57,4 +57,19 @@ describe("Unit testss for notifications", () => {
 
     expect(notification.getErrors()).toEqual([error]);
   });
+
+  it("should clear all errors", () => {
+    const notification = new Notification();
+    const error = {
+      message: "error message",
+      context: "customer",
+    };
+    notification.addError(error);
+
+    expect(notification.getErrors()).toEqual([error]);
+
+    notification.clear();
+
+    expect(notification.getErrors()).toEqual([]);
+  });
 });
