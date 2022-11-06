@@ -13,6 +13,10 @@ export default class Product extends Entity implements ProductInterface {
     this._name = name;
     this._price = price;
     this.validate();
+
+    if (this.notification.hasErrors()) {
+      throw new NotificationError(this.notification.getErrors());
+    }
   }
 
   get name(): string {
@@ -25,40 +29,34 @@ export default class Product extends Entity implements ProductInterface {
 
   changeName(name: string): void {
     this._name = name;
-    this.validate();
+    this.validate("name");
   }
 
   changePrice(price: number): void {
     this._price = price;
-    this.validate();
+    this.validate("price");
   }
 
-  validate(): boolean {
-    this.notification.clear();
-
-    if (this._id.length === 0) {
+  validate(field?: "id" | "name" | "price"): void {
+    if ((!field || field === "id") && this._id.length === 0) {
       this.notification.addError({
         context: "product",
         message: "Id is required",
       });
     }
-    if (this._name.length === 0) {
+
+    if ((!field || field === "name") && this._name.length === 0) {
       this.notification.addError({
         context: "product",
         message: "Name is required",
       });
     }
-    if (this._price < 0) {
+
+    if ((!field || field === "price") && this._price < 0) {
       this.notification.addError({
         context: "product",
         message: "Price must be greater than zero",
       });
     }
-
-    if (this.notification.hasErrors()) {
-      throw new NotificationError(this.notification.getErrors());
-    }
-
-    return true;
   }
 }
