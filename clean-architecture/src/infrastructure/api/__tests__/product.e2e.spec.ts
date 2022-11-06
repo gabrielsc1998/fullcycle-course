@@ -151,7 +151,7 @@ describe("E2E test for product", () => {
       const response = await request(app).put(BASE_ROUTE).send(input);
 
       expect(response.status).toBe(500);
-      expect(response.body.message).toEqual("Name is required");
+      expect(response.body.message).toEqual("product: Name is required");
     });
 
     it("should throw error when the price is invalid", async () => {
@@ -168,7 +168,29 @@ describe("E2E test for product", () => {
       const response = await request(app).put(BASE_ROUTE).send(input);
 
       expect(response.status).toBe(500);
-      expect(response.body.message).toEqual("Price must be greater than zero");
+      expect(response.body.message).toEqual(
+        "product: Price must be greater than zero"
+      );
+    });
+
+    it("should throw error when the price and name are invalids", async () => {
+      const createResponse = await request(app).post(BASE_ROUTE).send({
+        name: "product-name",
+        price: 100,
+      });
+
+      const input = {
+        id: createResponse.body.id,
+        name: "",
+        price: -1,
+      };
+
+      const response = await request(app).put(BASE_ROUTE).send(input);
+
+      expect(response.status).toBe(500);
+      expect(response.body.message).toEqual(
+        "product: Name is required,product: Price must be greater than zero"
+      );
     });
   });
 });

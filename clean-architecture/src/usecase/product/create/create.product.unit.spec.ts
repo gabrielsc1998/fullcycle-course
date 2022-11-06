@@ -56,4 +56,10 @@ describe("Create Product Use Case [ unity ]", () => {
       "Price must be greater than zero"
     );
   });
+
+  it("should throw an error when all data is invalid", async () => {
+    await expect(sut.useCase.execute({ name: "", price: -1 })).rejects.toThrow(
+      "product: Name is required,product: Price must be greater than zero"
+    );
+  });
 });

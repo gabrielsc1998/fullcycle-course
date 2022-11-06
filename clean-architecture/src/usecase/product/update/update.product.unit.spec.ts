@@ -65,6 +65,14 @@ describe("Update Product Use Case [ unity ]", () => {
     );
   });
 
+  it("should throw an error when try update with invalid data", async () => {
+    await expect(
+      sut.useCase.execute({ ...input, name: "", price: -1 })
+    ).rejects.toThrow(
+      "product: Name is required,product: Price must be greater than zero"
+    );
+  });
+
   it("should throw an error when try update an inexistent product", async () => {
     jest.spyOn(sut.repository, "find").mockImplementation(() => {
       throw new Error("Product not found");

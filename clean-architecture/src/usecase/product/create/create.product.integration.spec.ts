@@ -61,7 +61,7 @@ describe("Create Product Use Case  [ integration ]", () => {
     const spyRepository = jest.spyOn(sut.repository, "create");
 
     await expect(sut.useCase.execute({ ...input, name: "" })).rejects.toThrow(
-      "Name is required"
+      "product: Name is required"
     );
 
     expect(spyRepository).not.toBeCalled();
@@ -71,9 +71,15 @@ describe("Create Product Use Case  [ integration ]", () => {
     const spyRepository = jest.spyOn(sut.repository, "create");
 
     await expect(sut.useCase.execute({ ...input, price: -1 })).rejects.toThrow(
-      "Price must be greater than zero"
+      "product: Price must be greater than zero"
     );
 
     expect(spyRepository).not.toBeCalled();
+  });
+
+  it("should throw an error when all data is invalid", async () => {
+    await expect(sut.useCase.execute({ name: "", price: -1 })).rejects.toThrow(
+      "product: Name is required,product: Price must be greater than zero"
+    );
   });
 });

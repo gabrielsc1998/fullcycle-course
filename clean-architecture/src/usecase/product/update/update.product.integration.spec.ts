@@ -79,6 +79,18 @@ describe("Update Product Use Case [ integration ]", () => {
     );
   });
 
+  it("should throw an error when try update with invalid data", async () => {
+    sut.repository.create(
+      new Product(productMock.id, productMock.name, productMock.price)
+    );
+
+    await expect(
+      sut.useCase.execute({ ...input, name: "", price: -1 })
+    ).rejects.toThrow(
+      "product: Name is required,product: Price must be greater than zero"
+    );
+  });
+
   it("should throw an error when try update an inexistent product", async () => {
     await expect(
       sut.useCase.execute({ id: "inexistent-product-id" })
