@@ -1,3 +1,4 @@
+import NotificationError from "../../../domain/@shared/notification/notification.error";
 import ProductRepositoryInterface from "../../../domain/product/repository/product-repository.interface";
 
 import {
@@ -21,6 +22,10 @@ export default class UpdateProductUseCase {
 
     if (typeof input.price === "number") {
       product.changePrice(input.price);
+    }
+
+    if (product.notification.hasErrors()) {
+      throw new NotificationError(product.notification.getErrors());
     }
 
     await this.productRepository.update(product);
