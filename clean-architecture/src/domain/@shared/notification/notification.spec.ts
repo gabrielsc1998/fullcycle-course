@@ -36,6 +36,19 @@ describe("Unit testss for notifications", () => {
     );
   });
 
+  it("should not add two equal errors create errors", () => {
+    const notification = new Notification();
+    const error = {
+      message: "error message",
+      context: "customer",
+    };
+
+    notification.addError(error);
+    notification.addError(error);
+
+    expect(notification.messages("customer")).toBe("customer: error message,");
+  });
+
   it("should check if notification has at least one error", () => {
     const notification = new Notification();
     const error = {
